@@ -39,6 +39,7 @@ class Position:
     def copy(self): 
         return Position(self.index, self.ln, self.col, self.fname, self.ftext)
 
+#These are all our tokens
 TT_INT = 'TT_INT'
 TT_FLOAT = 'FLOAT'
 TT_PLUS = 'PLUS'
@@ -52,22 +53,28 @@ class Token:
     def __init__(self, type_, value=None):
         self.type = type_
         self.value = value
+        #This makes a token with a type for example INT and a value which can be something like 5
 
     def __repr__(self):
         if self.value: return f'{self.type}:{self.value}'
         return f'{self.type}'
+        #This is just a way to represent that information. If it has a value it will go INT:5 if not it will just go PLUS for example.
 
 class Lexer:
     def __init__(self, fname, text):
         self.fname = fname
         self.text = text
+        #text we will be processing
         self.pos = Position(-1, 0, -1, fname, text)
+        #current pos
         self.current_char = None 
+        #current char
         self.advance()
 
     def advance(self):
         self.pos.advance(self.current_char)
         self.current_char = self.text[self.pos.index] if self.pos.index < len(self.text) else None
+        #This advances to the next character in the text
 
     def make_tokens(self):
         tokens = []
@@ -119,6 +126,15 @@ class Lexer:
             return Token(TT_INT, int(num_str))
         else:
             return Token(TT_FLOAT, float(num_str))
+
+
+class NumberNode: 
+    def __init__(self, tok):
+        self.tok = tok
+
+    def __repr__(self):
+        return f'{self.tok}'
+
 
 def run(fname, text):
     lexer = Lexer(fname, text)
