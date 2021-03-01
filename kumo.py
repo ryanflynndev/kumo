@@ -24,6 +24,7 @@ class IllegalCharError(Error):
         super().__init__(pos_start, pos_end, 'Illegal Character', details)
 
 class Position:
+    #Keeps track of index, line number, column number, filename and file text. This is for error reporting
     def __init__(self, index, ln, col, fname, ftext):
         self.index = index 
         self.ln = ln
@@ -32,15 +33,17 @@ class Position:
         self.ftext = ftext
     
     def advance(self, current_char):
+        #When we advance we increase the index and column number
         self.index += 1
         self.col += 1
-
+        #Everytime we see a new line we will update the line number and reset the column number
         if current_char == '\n':
             self.ln += 1
             self.col = 0
         return self 
     
     def copy(self): 
+        #This creates a copy of the position
         return Position(self.index, self.ln, self.col, self.fname, self.ftext)
 
 #These are all our tokens
@@ -142,8 +145,9 @@ class Lexer:
             else:
                 #if it is not a decimal/dot then we just append the current char to our num string
                 num_str += self.current_char
-                
+            #Goes to next character after drtermining what it is    
             self.advance()
+        
         if dot_count == 0:
             #if there are no decimals our char is an integer
             return Token(TT_INT, int(num_str))
