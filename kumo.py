@@ -5,18 +5,22 @@ DIGITS = '0123456789'
 
 class Error:
     def __init__(self, pos_start, pos_end, error_name, details):
+        #When we make an error we take in the position start and end of the error. And we take the name and some descriptive details
         self.pos_start = pos_start
         self.pos_end = pos_end
         self.error_name = error_name
         self.details = details
     
     def as_string(self):
+        #This creates a string that shows the error name and details
         result = f'{self.error_name}: {self.details}'
+        #This shows the file name and line number of where it occurred
         result += f' in File {self.pos_start.fname} at line {self.pos_start.ln + 1}'
         return result
 
 class IllegalCharError(Error):
     def __init__(self, pos_start, pos_end, details):
+        #This is an error that occurs when an illegal character shows up.
         super().__init__(pos_start, pos_end, 'Illegal Character', details)
 
 class Position:
@@ -111,11 +115,14 @@ class Lexer:
                 tokens.append(Token(TT_RPAREN))
                 self.advance()
             else:
+                #Here we store the pos and the current illegal character
                 pos_start = self.pos.copy()
                 char = self.current_char
                 self.advance()
+                #Then we return both a empty list of tokens and an illegal character error with the starting pos. The position after advance is called and the illegal character
                 return [], IllegalCharError(pos_start, self.pos, "'" + char + "'")
-
+                
+        #Here we return the tokens and none for the error
         return tokens, None 
 
     def make_number(self):
