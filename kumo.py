@@ -191,9 +191,14 @@ class Parser:
         if self.tok_idx < len(self.tokens):
             self.current_tok = self.tokens[self.tok_idx]
         return self.current_tok
-        
+
     def factor(self):
-        pass
+        #Here we grab the current token
+        tok = self.current_tok
+        #Then we see if its type is of an INT or a FLOAT. If so we advance to the next token and create a number node with the token.
+        if tok.type in (TT_INT, TT_FLOAT):
+            self.advance()
+            return NumberNode(tok)
 
     def term(self):
         pass 
