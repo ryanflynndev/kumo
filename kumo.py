@@ -159,12 +159,23 @@ class Lexer:
 
 
 class NumberNode: 
+    #The Number Node is the node in our parser that will take the corresponding number token either a float or int
     def __init__(self, tok):
         self.tok = tok
 
     def __repr__(self):
+        #string representation of number node
         return f'{self.tok}'
 
+class BinOpNode:
+    #This is a node for our operator. Ex: PLUS
+    def __init__(self, left_node, op_tok, right_node):
+        #We take in a left and right node and add our operator token
+        self.left_node = left_node
+        self.op_tok = op_tok 
+        self.right_node = right_node
+    def __repr__(self):
+        return f'({self.left_node}, {self.op_tok}, {self.right_node})'
 
 def run(fname, text):
     #Now we finally run our lexer with a file name and the text we want to run
