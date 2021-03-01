@@ -118,19 +118,24 @@ class Lexer:
     def make_number(self):
         num_str = ''
         dot_count = 0
-
+        #Here we are making the string representation of our number, and keeping track of how many decimals there are
         while self.current_char != None and self.current_char in DIGITS + '.':
+            #Here we are making sure the current char exists, and that is either a digit or a .
             if self.current_char == '.':
                 if dot_count == 1: break
                 dot_count += 1
                 num_str += '.'
+                #If we find a dot we increment our dot count, and we add the "." to our string repr of our number. If there is more than one we break, because a number can't have more than one decimal.
             else:
                 num_str += self.current_char
+                #if it is not a decimal/dot then we just append the current char to our num string
             self.advance()
         if dot_count == 0:
             return Token(TT_INT, int(num_str))
+            #if there are no decimals our char is an integer
         else:
             return Token(TT_FLOAT, float(num_str))
+            #if there are decimals then our char is a float
 
 
 class NumberNode: 
