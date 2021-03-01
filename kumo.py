@@ -201,10 +201,19 @@ class Parser:
             return NumberNode(tok)
 
     def term(self):
-        pass 
+        return self.bin_op(self.factor, (TT_MUL, TT_DIV))
 
     def expression(self):
         pass
+
+    def bin_op(self, func, ops):
+        left = func()
+
+        while self.current_tok in ops:
+            op_tok = self.current_tok
+            self.advance()
+            right = func()
+            left = BinOpNode(left, op_tok, right)
 
 def run(fname, text):
     #Now we finally run our lexer with a file name and the text we want to run
