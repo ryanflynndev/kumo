@@ -70,11 +70,13 @@ class Lexer:
         self.current_char = None 
         #current char
         self.advance()
+        #We call the advance method on intialization of our lexer. This will make it start out at 0.
 
     def advance(self):
         self.pos.advance(self.current_char)
-        self.current_char = self.text[self.pos.index] if self.pos.index < len(self.text) else None
         #This advances to the next character in the text
+        self.current_char = self.text[self.pos.index] if self.pos.index < len(self.text) else None
+        #This grabs the current character only if the index is not the length of the text. If it is we set the current char to none.
 
     def make_tokens(self):
         tokens = []
