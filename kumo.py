@@ -173,3 +173,11 @@ def run(fname, text):
     tokens, error = lexer.make_tokens()
     #Now we return the tokens and the error
     return tokens, error
+
+
+
+
+#Parser Notes:
+# When we add two numbers in our language we will have an expression, two terms, and two factors.
+# 10 + 5 * 2
+#This is an expression with two terms(10 and 5*2), and three factors (10, 5, and 2)
