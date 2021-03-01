@@ -1,6 +1,6 @@
 # Kumo
 ![alt text](img/readme_img.png)
-Kumo is a general-purpose high level programming language that is based on the BASIC programming language. It was written by Ryan Flynn using Python3. 
+Kumo is a general-purpose high level programming language that is based on the BASIC family of programming languages. It was written by Ryan Flynn using Python3. 
 
 ## Usage
 

@@ -177,6 +177,30 @@ class BinOpNode:
     def __repr__(self):
         return f'({self.left_node}, {self.op_tok}, {self.right_node})'
 
+class Parser:
+    def __init__(self, tokens):
+        #Parser goes through the tokens
+        self.tokens = tokens 
+        self.tok_idx = -1
+        self.advance()
+
+    def advance(self):
+        #We increment the token index
+        self.tok_idx += 1
+        #As long as there are still tokens we will go though and find the current token and return it after advancing.
+        if self.tok_idx < len(self.tokens):
+            self.current_tok = self.tokens[self.tok_idx]
+        return self.current_tok
+        
+    def factor(self):
+        pass
+
+    def term(self):
+        pass 
+
+    def expression(self):
+        pass
+
 def run(fname, text):
     #Now we finally run our lexer with a file name and the text we want to run
     lexer = Lexer(fname, text)
