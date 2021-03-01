@@ -44,7 +44,7 @@ class Position:
         return Position(self.index, self.ln, self.col, self.fname, self.ftext)
 
 #These are all our tokens
-TT_INT = 'TT_INT'
+TT_INT = 'INT'
 TT_FLOAT = 'FLOAT'
 TT_PLUS = 'PLUS'
 TT_MINUS = 'MINUS'
