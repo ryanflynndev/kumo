@@ -1,7 +1,7 @@
 
 
 DIGITS = '0123456789'
-
+#This is all our digits, and helps use determine if our char is a digit or not.
 
 class Error:
     def __init__(self, pos_start, pos_end, error_name, details):
@@ -80,12 +80,15 @@ class Lexer:
 
     def make_tokens(self):
         tokens = []
-
+        # This will hold our tokens
         while self.current_char != None: 
+            #This a loop that will got through every char what token the current char will hold as long as the current char is not None.
             if self.current_char in ' \t':
                 self.advance() 
+                #This ignores all spaces and tabs, and calls advance when it sees one
             elif self.current_char in DIGITS:
                 tokens.append(self.make_number())
+                #This looks to see if our char is in the digits constant, and if so it makes into a number.
             elif self.current_char == '+':
                 tokens.append(Token(TT_PLUS))
                 self.advance()
