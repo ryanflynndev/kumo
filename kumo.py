@@ -121,7 +121,7 @@ class Lexer:
                 self.advance()
                 #Then we return both a empty list of tokens and an illegal character error with the starting pos. The position after advance is called and the illegal character
                 return [], IllegalCharError(pos_start, self.pos, "'" + char + "'")
-                
+
         #Here we return the tokens and none for the error
         return tokens, None 
 
@@ -163,7 +163,9 @@ class NumberNode:
 
 
 def run(fname, text):
+    #Now we finally run our lexer with a file name and the text we want to run
     lexer = Lexer(fname, text)
+    #We make tokens out of it
     tokens, error = lexer.make_tokens()
-
+    #Now we return the tokens and the error
     return tokens, error
