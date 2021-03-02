@@ -192,6 +192,10 @@ class Parser:
             self.current_tok = self.tokens[self.tok_idx]
         return self.current_tok
 
+    def parse(self):
+        res = self.expression()
+        return res
+
     def factor(self):
         #Here we grab the current token
         tok = self.current_tok
@@ -201,27 +205,36 @@ class Parser:
             return NumberNode(tok)
 
     def term(self):
+        #Calling binary operation on a factor 
         return self.bin_op(self.factor, (TT_MUL, TT_DIV))
 
     def expression(self):
-        pass
+        #Calling a binary operation on the term
+        return self.bin_op(self.term, (TT_PLUS, TT_MINUS))
 
     def bin_op(self, func, ops):
+        #Takes in either a factor or term
         left = func()
 
-        while self.current_tok in ops:
+        while self.current_tok.type in ops:
             op_tok = self.current_tok
             self.advance()
             right = func()
             left = BinOpNode(left, op_tok, right)
+        return left
 
 def run(fname, text):
     #Now we finally run our lexer with a file name and the text we want to run
     lexer = Lexer(fname, text)
     #We make tokens out of it
     tokens, error = lexer.make_tokens()
-    #Now we return the tokens and the error
-    return tokens, error
+    if error: return None, error
+    #Generating the Abstract Syntax Tree
+    parser = Parser(tokens)
+    ast = parser.parse()
+
+    #Now we return the ast and the error
+    return ast, error
 
 
 
