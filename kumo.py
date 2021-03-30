@@ -23,6 +23,11 @@ class IllegalCharError(Error):
         #This is an error that occurs when an illegal character shows up.
         super().__init__(pos_start, pos_end, 'Illegal Character', details)
 
+class InvalidSyntaxError(Error):
+    def __init__(self, pos_start, pos_end, details):
+        #This is an error that occurs when there is invalid syntax
+        super().__init__(pos_start, pos_end, 'Invalid Syntax', details)
+
 class Position:
     #Keeps track of index, line number, column number, filename and file text. This is for error reporting
     def __init__(self, index, ln, col, fname, ftext):
@@ -215,7 +220,7 @@ class Parser:
     def bin_op(self, func, ops):
         #Takes in either a factor or term
         left = func()
-
+        #While the token type is one of the operators given we keep making nodes
         while self.current_tok.type in ops:
             op_tok = self.current_tok
             self.advance()
