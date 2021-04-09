@@ -68,10 +68,15 @@ TT_LPAREN = 'LPAREN'
 TT_RPAREN = 'RPAREN'
 
 class Token:
-    def __init__(self, type_, value=None):
+    def __init__(self, type_, value=None, pos_start=None, pos_end=None):
         #This makes a token with a type for example INT and a value which can be something like 5
         self.type = type_
         self.value = value
+        #Checking if there is a position start, and if there is creating the end from it
+        if pos_start:
+            self.pos_start = pos_start.copy()
+            self.pos_end = pos_start.copy()
+            self.pos_end.advance()
 
     def __repr__(self):
         #This is just a way to represent that information. If it has a value it will go INT:5 if not it will just go PLUS for example.
@@ -187,6 +192,22 @@ class BinOpNode:
         self.right_node = right_node
     def __repr__(self):
         return f'({self.left_node}, {self.op_tok}, {self.right_node})'
+
+#This ParseResult class will check if there are any errors
+
+class ParseResult:
+    def __init__(self):
+        self.error = None 
+        self.node = None
+
+    def register(self):
+        pass
+
+    def success(self):
+        pass 
+
+    def failure(self):
+        pass
 
 class Parser:
     def __init__(self, tokens):
