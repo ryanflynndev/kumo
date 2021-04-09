@@ -1,3 +1,7 @@
+#Imports
+
+from strings_with_arrows import *
+
 
 #This is all our digits, and helps use determine if our char is a digit or not.
 DIGITS = '0123456789'
@@ -16,6 +20,8 @@ class Error:
         result = f'{self.error_name}: {self.details}'
         #This shows the file name and line number of where it occurred
         result += f' in File {self.pos_start.fname} at line {self.pos_start.ln + 1}'
+        #Formats the error text with arrows and a lot more info
+        result += '\n\n' + string_with_arrows(self.pos_start.ftxt, self.pos_start, self.pos_end)
         return result
 
 class IllegalCharError(Error):
