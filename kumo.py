@@ -200,8 +200,11 @@ class ParseResult:
         self.error = None 
         self.node = None
 
-    def register(self):
-        pass
+    def register(self, res):
+        if isinstance(res, ParseResult):
+            if res.error: self.error = res.error
+            return res.node
+        return res
 
     def success(self):
         pass 
