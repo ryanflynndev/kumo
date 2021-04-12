@@ -234,12 +234,18 @@ class Parser:
         return res
 
     def factor(self):
+        #Making a parse result instance every time
+        res = ParseResult()
         #Here we grab the current token
         tok = self.current_tok
         #Then we see if its type is of an INT or a FLOAT. If so we advance to the next token and create a number node with the token.
         if tok.type in (TT_INT, TT_FLOAT):
-            self.advance()
-            return NumberNode(tok)
+            #does nothing right now 
+            res.register(self.advance())
+            return res.success(NumberNode(tok))
+        
+        #Returns invalid syntax error if type is not int or float
+        return res.failure(InvalidSyntaxError(tok.pos_start, tok.pos_end, "Expected int or float"))
 
     def term(self):
         #Calling binary operation on a factor 
