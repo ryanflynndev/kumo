@@ -307,6 +307,19 @@ class Parser:
             left = BinOpNode(left, op_tok, right)
         return res.success(left)
 
+### INTERPRETER ###
+
+class Interpreter:
+    #Visit method will process the node and then process all the child nodes
+    def visit(self, node):
+        #Creates these strings
+        #visit_BinOpNode
+        #visit_NumberNode
+        method_name = f'visit_{type(node).__name__}'
+        #Will call the appropriate method
+        method = getattr(self, method_name, self.no_visit_method)
+        return method(node)
+
 def run(fname, text):
     #Now we finally run our lexer with a file name and the text we want to run
     lexer = Lexer(fname, text)
