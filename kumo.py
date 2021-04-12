@@ -255,6 +255,7 @@ class Parser:
         res = ParseResult()
         #Here we grab the current token
         tok = self.current_tok
+
         #For unary operators
         if tok.type in (TT_PLUS, TT_MINUS):
             res.register(self.advance())
@@ -267,6 +268,16 @@ class Parser:
             #does nothing right now 
             res.register(self.advance())
             return res.success(NumberNode(tok))
+
+        elif tok.type == TT_LPAREN:
+            res.register(self.advance())
+            expr = res.register(self.expression())
+            if res.error: return res
+            if self.current_tok.type == TT_RPAREN:
+                res.register(self.advance())
+                return res.success(expr)
+            else:
+                return res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end, "Expected ')'"))
         
         #Returns invalid syntax error if type is not int or float
         return res.failure(InvalidSyntaxError(tok.pos_start, tok.pos_end, "Expected int or float"))
