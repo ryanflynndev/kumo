@@ -3,7 +3,7 @@
 from strings_with_arrows import *
 
 
-#This is all our digits, and helps use determine if our char is a digit or not.
+#This is all our digits, and helps us determine if our char is a digit or not.
 DIGITS = '0123456789'
 
 
@@ -66,6 +66,7 @@ TT_MUL = 'MUL'
 TT_DIV = 'DIV'
 TT_LPAREN = 'LPAREN'
 TT_RPAREN = 'RPAREN'
+TT_EOF = 'EOF'
 
 class Token:
     def __init__(self, type_, value=None, pos_start=None, pos_end=None):
@@ -141,6 +142,8 @@ class Lexer:
                 #Then we return both a empty list of tokens and an illegal character error with the starting pos. The position after advance is called and the illegal character
                 return [], IllegalCharError(pos_start, self.pos, "'" + char + "'")
 
+        #Adds end of file token at the end
+        tokens.append(Token(TT_EOF), pos_start=self.pos)
         #Here we return the tokens and none for the error
         return tokens, None 
 
@@ -148,6 +151,7 @@ class Lexer:
         #Here we are making the string representation of our number, and keeping track of how many decimals there are
         num_str = ''
         dot_count = 0
+        pos_start = self.pos.copy()
         
         #Here we are making sure the current char exists, and that is either a digit or a .
         while self.current_char != None and self.current_char in DIGITS + '.':
@@ -166,11 +170,11 @@ class Lexer:
         
         if dot_count == 0:
             #if there are no decimals our char is an integer
-            return Token(TT_INT, int(num_str))
+            return Token(TT_INT, int(num_str), pos_start, self.pos)
             
         else:
             #if there are decimals then our char is a float
-            return Token(TT_FLOAT, float(num_str))
+            return Token(TT_FLOAT, float(num_str), pos_start, self.pos)
             
 
 
