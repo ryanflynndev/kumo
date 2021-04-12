@@ -324,6 +324,19 @@ class Interpreter:
     def no_visit_method(self, node):
         raise Exception(f'No visit_{type(node).__name__} method defined')
 
+    def visit_NumberNode(self, node):
+        print("Found number node!")
+
+    def visit_BinOpNode(self, node):
+        print("Found binary operator node!")
+        self.visit(node.left_node)
+        self.visit(node.right_node)
+
+    def visit_UnaryOpNode(self, node):
+        print("Found unary operator node!")
+        self.visit(node.left_node)
+        self.visit(node.right_node)
+
 def run(fname, text):
     #Now we finally run our lexer with a file name and the text we want to run
     lexer = Lexer(fname, text)
@@ -333,9 +346,16 @@ def run(fname, text):
     #Generating the Abstract Syntax Tree
     parser = Parser(tokens)
     ast = parser.parse()
+    #error check
+    if ast.error: return None, ast.error
+
+    #Run program with interpreter
+    interpreter = Interpreter()
+    interpreter.visit(ast.node)
 
     #Now we return the ast node and the error
-    return ast.node, ast.error
+    return None, None
+    # return ast.node, ast.error
 
 
 
