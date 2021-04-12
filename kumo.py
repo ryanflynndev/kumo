@@ -21,7 +21,7 @@ class Error:
         #This shows the file name and line number of where it occurred
         result += f' in File {self.pos_start.fname} at line {self.pos_start.ln + 1}'
         #Formats the error text with arrows and a lot more info
-        result += '\n\n' + string_with_arrows(self.pos_start.ftxt, self.pos_start, self.pos_end)
+        result += '\n\n' + string_with_arrows(self.pos_start.ftext, self.pos_start, self.pos_end)
         return result
 
 class IllegalCharError(Error):
@@ -43,7 +43,7 @@ class Position:
         self.fname = fname 
         self.ftext = ftext
     
-    def advance(self, current_char):
+    def advance(self, current_char=None):
         #When we advance we increase the index and column number
         self.index += 1
         self.col += 1
@@ -143,7 +143,7 @@ class Lexer:
                 return [], IllegalCharError(pos_start, self.pos, "'" + char + "'")
 
         #Adds end of file token at the end
-        tokens.append(Token(TT_EOF), pos_start=self.pos)
+        tokens.append(Token(TT_EOF, pos_start=self.pos))
         #Here we return the tokens and none for the error
         return tokens, None 
 
@@ -210,7 +210,7 @@ class ParseResult:
             return res.node
         return res
 
-    def success(self):
+    def success(self, node):
         self.node = node
         return self
 
@@ -235,7 +235,7 @@ class Parser:
 
     def parse(self):
         res = self.expression()
-        #Checks to see if there is code that still hasn't been parsed. Which means there is a syntax error
+        #Checks to see if there is code that still hasn't been parsed. This means there is a syntax error
         if not res.error and self.current_tok.type != TT_EOF:
             return res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end, "Expected '+', '-', '*' or '/'"))
         return res
@@ -289,8 +289,8 @@ def run(fname, text):
     parser = Parser(tokens)
     ast = parser.parse()
 
-    #Now we return the ast and the error
-    return ast, error
+    #Now we return the ast node and the error
+    return ast.node, ast.error
 
 
 
