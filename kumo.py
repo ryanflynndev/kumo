@@ -320,6 +320,10 @@ class Interpreter:
         method = getattr(self, method_name, self.no_visit_method)
         return method(node)
 
+    #If wrong visit method or no visit method
+    def no_visit_method(self, node):
+        raise Exception(f'No visit_{type(node).__name__} method defined')
+
 def run(fname, text):
     #Now we finally run our lexer with a file name and the text we want to run
     lexer = Lexer(fname, text)
