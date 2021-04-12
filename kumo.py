@@ -207,10 +207,12 @@ class ParseResult:
         return res
 
     def success(self):
-        pass 
+        self.node = node
+        return self
 
-    def failure(self):
-        pass
+    def failure(self, error):
+        self.error = error
+        return self
 
 class Parser:
     def __init__(self, tokens):
