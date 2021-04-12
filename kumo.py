@@ -256,15 +256,21 @@ class Parser:
         return self.bin_op(self.term, (TT_PLUS, TT_MINUS))
 
     def bin_op(self, func, ops):
+        # Making an instance of ParseResult for every operation
+        res = ParseResult()
         #Takes in either a factor or term
-        left = func()
+        left = res.register(func())
+        #checking if there is an error
+        if res.error: return res
         #While the token type is one of the operators given we keep making nodes
         while self.current_tok.type in ops:
             op_tok = self.current_tok
-            self.advance()
-            right = func()
+            res.register(self.advance())
+            right = res.register(func())
+            #check if error
+            if res.error: return res
             left = BinOpNode(left, op_tok, right)
-        return left
+        return res.success(left)
 
 def run(fname, text):
     #Now we finally run our lexer with a file name and the text we want to run
