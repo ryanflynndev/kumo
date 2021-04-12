@@ -235,6 +235,9 @@ class Parser:
 
     def parse(self):
         res = self.expression()
+        #Checks to see if there is code that still hasn't been parsed. Which means there is a syntax error
+        if not res.error and self.current_tok.type != TT_EOF:
+            return res.failure(InvalidSyntaxError(self.current_tok.pos_start, self.current_tok.pos_end, "Expected '+', '-', '*' or '/'"))
         return res
 
     def factor(self):
