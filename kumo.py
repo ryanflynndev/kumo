@@ -116,22 +116,22 @@ class Lexer:
                 tokens.append(self.make_number())
                 
             elif self.current_char == '+':
-                tokens.append(Token(TT_PLUS))
+                tokens.append(Token(TT_PLUS, pos_start=self.pos))
                 self.advance()
             elif self.current_char == '-':
-                tokens.append(Token(TT_MINUS))
+                tokens.append(Token(TT_MINUS, pos_start=self.pos))
                 self.advance()
             elif self.current_char == '*':
-                tokens.append(Token(TT_MUL))
+                tokens.append(Token(TT_MUL, pos_start=self.pos))
                 self.advance()
             elif self.current_char == '/':
-                tokens.append(Token(TT_DIV))
+                tokens.append(Token(TT_DIV, pos_start=self.pos))
                 self.advance()
             elif self.current_char == '(':
-                tokens.append(Token(TT_LPAREN))
+                tokens.append(Token(TT_LPAREN, pos_start=self.pos))
                 self.advance()
             elif self.current_char == ')':
-                tokens.append(Token(TT_RPAREN))
+                tokens.append(Token(TT_RPAREN, pos_start=self.pos))
                 self.advance()
             else:
                 #Here we store the pos and the current illegal character
