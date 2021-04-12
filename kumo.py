@@ -255,8 +255,15 @@ class Parser:
         res = ParseResult()
         #Here we grab the current token
         tok = self.current_tok
+        #For unary operators
+        if tok.type in (TT_PLUS, TT_MINUS):
+            res.register(self.advance())
+            factor = res.register(self.factor())
+            if res.error: return res
+            return res.success(UnaryOpNode(tok, factor))
+
         #Then we see if its type is of an INT or a FLOAT. If so we advance to the next token and create a number node with the token.
-        if tok.type in (TT_INT, TT_FLOAT):
+        elif tok.type in (TT_INT, TT_FLOAT):
             #does nothing right now 
             res.register(self.advance())
             return res.success(NumberNode(tok))
